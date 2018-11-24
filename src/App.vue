@@ -40,14 +40,13 @@
     <section class="App__example o-vertical-spacing o-vertical-spacing--l">
       <h2>Image element</h2>
 
-      <ParallaxContainer
-        :style="{
-          height: `160px`
-        }"
-      >
-        <ParallaxImage :factor="0.5">
+      <ParallaxContainer>
+        <ParallaxImage
+          :aspect-ratio="289 / 432"
+          :factor="0.5"
+        >
           <img
-            src="https://images.unsplash.com/photo-1516750930166-ed88ab1adb61?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=65c8f6fcafaf68f5fa434b5f076780fd&auto=format&fit=crop&h=300&q=80"
+            src="https://images.unsplash.com/photo-1516750930166-ed88ab1adb61?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=65c8f6fcafaf68f5fa434b5f076780fd&auto=format&fit=crop&w432&h=289&q=80"
             alt="Road that leads to a mountain"
           >
         </ParallaxImage>
@@ -178,9 +177,5 @@ export default {
 .App__example-element {
   padding: 1em;
   max-width: 12em;
-
-  &:nth-child(2) {
-    top: 2em;
-  }
 }
 </style>

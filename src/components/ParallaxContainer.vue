@@ -1,5 +1,8 @@
 <template>
-  <div class="ParallaxContainer">
+  <div
+    class="ParallaxContainer"
+    @load.capture="calcParallax"
+  >
     <slot/>
   </div>
 </template>
@@ -7,6 +10,20 @@
 <script>
 export default {
   name: `ParallaxContainer`,
+  provide() {
+    return {
+      parallaxContainer: this.data,
+    };
+  },
+  data() {
+    return {
+      data: {
+        height: 0,
+        scrollFactor: 0,
+        width: 0,
+      },
+    };
+  },
   computed: {
     elements() {
       return this.$slots.default.map(({ child }) => child);
@@ -17,27 +34,25 @@ export default {
 
     // We're using a `requestAnimationFrame()`
     // for optimal performance.
-    const scrollHandler = () => requestAnimationFrame(this.calcParallax);
-    window.addEventListener(`scroll`, scrollHandler);
+    const eventHandler = () => requestAnimationFrame(this.calcParallax);
+    window.addEventListener(`resize`, eventHandler);
+    window.addEventListener(`scroll`, eventHandler);
     // Remove the scroll hanlder when the
     // component is destroyed.
-    this.$on(`destroyed`, () => {
-      window.removeEventListener(`scroll`, scrollHandler);
+    this.$on(`hook:destroyed`, () => {
+      window.removeEventListener(`resize`, eventHandler);
+      window.removeEventListener(`scroll`, eventHandler);
     });
   },
   methods: {
     calcParallax() {
       const containerRect = this.$el.getBoundingClientRect();
-      const containerHeight = containerRect.height;
-      const containerViewportOffsetTop = this.$el.getBoundingClientRect().top;
-      // Position relative to the viewport.
-      const viewportPosition = containerViewportOffsetTop / (window.innerHeight * 0.01);
-      // Position relative to the container.
-      const containerPosition = containerHeight * viewportPosition * 0.01;
 
-      this.elements.forEach((component) => {
-        component.$el.style.transform = `translate3d(0, ${containerPosition * component.factor}px, 0)`;
-      });
+      this.data.height = containerRect.height;
+      this.data.width = containerRect.width;
+
+      const containerViewportOffsetTop = containerRect.top;
+      this.data.scrollFactor = (containerViewportOffsetTop + this.data.height) / (window.innerHeight + this.data.height);
     },
   },
 };
