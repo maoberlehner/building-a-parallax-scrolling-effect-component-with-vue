@@ -33,8 +33,12 @@ export default {
   },
   inject: [`parallaxContainer`],
   props: {
-    aspectRatio: {
-      default: 9 / 16,
+    width: {
+      required: true,
+      type: Number,
+    },
+    height: {
+      required: true,
       type: Number,
     },
     factor: {
@@ -44,26 +48,29 @@ export default {
   },
   data() {
     return {
-      height: 0,
+      innerHeight: 0,
     };
   },
   computed: {
+    aspectRatio() {
+      return this.height / this.width;
+    },
     compensatedHeight() {
-      return this.height - (this.height * this.factor * 0.75);
+      return this.innerHeight - (this.innerHeight * this.factor * 0.75);
     },
   },
   mounted() {
-    this.setHeight();
+    this.setInnerHeight();
 
-    const eventHandler = () => requestAnimationFrame(this.setHeight);
+    const eventHandler = () => requestAnimationFrame(this.setInnerHeight);
     window.addEventListener(`resize`, eventHandler);
     this.$on(`hook:destroyed`, () => {
       window.removeEventListener(`resize`, eventHandler);
     });
   },
   methods: {
-    setHeight() {
-      this.height = this.$refs.inside.getBoundingClientRect().height;
+    setInnerHeight() {
+      this.innerHeight = this.$refs.inside.getBoundingClientRect().height;
     }
   },
 };

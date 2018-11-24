@@ -42,7 +42,8 @@
 
       <ParallaxContainer>
         <ParallaxImage
-          :aspect-ratio="289 / 432"
+          :width="432"
+          :height="289"
           :factor="0.5"
         >
           <img
