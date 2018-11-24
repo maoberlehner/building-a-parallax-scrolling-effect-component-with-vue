@@ -3,6 +3,7 @@
     :style="{
       height: `${compensatedHeight}px`,
     }"
+    class="ParallaxImage"
   >
     <ParallaxElement
       :factor="factor"
@@ -10,11 +11,11 @@
         top: `-${compensatedHeight / (1 / factor)}px`,
         paddingTop: `${aspectRatio * 100}%`,
       }"
-      class="ParallaxImage"
+      class="ParallaxImage__aspect-ratio-wrap"
     >
       <div
         ref="inside"
-        class="ParallaxImage__inside"
+        class="ParallaxImage__aspect-ratio-inside"
       >
         <slot/>
       </div>
@@ -69,13 +70,13 @@ export default {
 </script>
 
 <style lang="scss">
-.ParallaxImage {
+.ParallaxImage__aspect-ratio-wrap {
   height: 0;
   overflow: hidden;
   position: relative;
 }
 
-.ParallaxImage__inside {
+.ParallaxImage__aspect-ratio-inside {
   position: absolute;
   top: 0;
   left: 0;
