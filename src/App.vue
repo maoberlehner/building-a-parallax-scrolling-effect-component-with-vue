@@ -38,6 +38,23 @@
     </section>
 
     <section class="App__example o-vertical-spacing o-vertical-spacing--l">
+      <h2>Image element</h2>
+
+      <ParallaxContainer
+        :style="{
+          height: `160px`
+        }"
+      >
+        <ParallaxImage :factor="0.5">
+          <img
+            src="https://images.unsplash.com/photo-1516750930166-ed88ab1adb61?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=65c8f6fcafaf68f5fa434b5f076780fd&auto=format&fit=crop&h=300&q=80"
+            alt="Road that leads to a mountain"
+          >
+        </ParallaxImage>
+      </ParallaxContainer>
+    </section>
+
+    <section class="App__example o-vertical-spacing o-vertical-spacing--l">
       <h2>Just for scrolling</h2>
 
       <p>
@@ -107,12 +124,14 @@
 <script>
 import ParallaxContainer from './components/ParallaxContainer.vue';
 import ParallaxElement from './components/ParallaxElement.vue';
+import ParallaxImage from './components/ParallaxImage.vue';
 
 export default {
   name: `App`,
   components: {
     ParallaxContainer,
     ParallaxElement,
+    ParallaxImage,
   },
 };
 </script>
