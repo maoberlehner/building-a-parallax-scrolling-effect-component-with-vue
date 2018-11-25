@@ -6,9 +6,8 @@
     class="ParallaxImage"
   >
     <ParallaxElement
-      :factor="factor"
+      :factor="compensatedFactor"
       :style="{
-        top: `-${compensatedHeight / (1 / factor)}px`,
         paddingTop: `${aspectRatio * 100}%`,
       }"
       class="ParallaxImage__aspect-ratio-wrap"
@@ -31,7 +30,6 @@ export default {
   components: {
     ParallaxElement,
   },
-  inject: [`parallaxContainer`],
   props: {
     width: {
       required: true,
@@ -55,8 +53,22 @@ export default {
     aspectRatio() {
       return this.height / this.width;
     },
+    compensatedFactor() {
+      // Because the parallax effect is relative
+      // to the containers height and because we
+      // shrink the containers height by the given
+      // factor, we have to compensate this by
+      // increasing the factor.
+      return this.factor / this.factor;
+    },
     compensatedHeight() {
-      return this.innerHeight - (this.innerHeight * this.factor * 0.75);
+      // We want the image to scroll inside of a
+      // container to prevent the image scrolling
+      // above its sourounding elements. The
+      // container must be shrinked by the given
+      // factor to make sure we don't have any
+      // whitespace when scrolling.
+      return this.innerHeight - (this.innerHeight * this.factor);
     },
   },
   mounted() {
@@ -71,16 +83,17 @@ export default {
   methods: {
     setInnerHeight() {
       this.innerHeight = this.$refs.inside.getBoundingClientRect().height;
-    }
+    },
   },
 };
 </script>
 
 <style lang="scss">
 .ParallaxImage__aspect-ratio-wrap {
+  position: relative;
+  top: -100%;
   height: 0;
   overflow: hidden;
-  position: relative;
 }
 
 .ParallaxImage__aspect-ratio-inside {

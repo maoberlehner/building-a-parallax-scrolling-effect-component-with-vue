@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="ParallaxContainer"
-    @load.capture="calcParallax"
-  >
+  <div class="ParallaxContainer">
     <slot/>
   </div>
 </template>
@@ -23,11 +20,6 @@ export default {
         width: 0,
       },
     };
-  },
-  computed: {
-    elements() {
-      return this.$slots.default.map(({ child }) => child);
-    },
   },
   mounted() {
     this.calcParallax();
@@ -51,8 +43,10 @@ export default {
       this.data.height = containerRect.height;
       this.data.width = containerRect.width;
 
-      const containerViewportOffsetTop = containerRect.top;
-      this.data.scrollFactor = (containerViewportOffsetTop + this.data.height) / (window.innerHeight + this.data.height);
+      const viewportOffsetTop = containerRect.top;
+      const viewportOffsetBottom = window.innerHeight - viewportOffsetTop;
+
+      this.data.scrollFactor = viewportOffsetBottom / (window.innerHeight + this.data.height);
     },
   },
 };
@@ -61,6 +55,5 @@ export default {
 <style lang="scss">
 .ParallaxContainer {
   overflow: hidden;
-  position: relative;
 }
 </style>
