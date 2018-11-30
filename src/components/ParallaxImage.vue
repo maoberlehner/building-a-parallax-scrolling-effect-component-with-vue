@@ -59,7 +59,7 @@ export default {
       // shrink the containers height by the given
       // factor, we have to compensate this by
       // increasing the factor.
-      return this.factor / this.factor;
+      return this.factor * 2;
     },
     compensatedHeight() {
       // We want the image to scroll inside of a
